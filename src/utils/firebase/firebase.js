@@ -17,7 +17,11 @@ import {
     getFirestore,
     doc,
     getDoc,
-    setDoc
+    setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -46,7 +50,42 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googlePro
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth, additionalInfo={}) => {
+// collection key = name of collection, objects = documents we would like to add
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach((object) => {
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        // set docRef location with a vue of object itself
+        batch.set(docRef, object)
+    });
+
+    await batch.commit();
+    console.log('done');
+}
+
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+
+    const querySnapshot = await getDocs(q);
+
+    // querySnapshot.docs is an array, we will reduce it to object, as it's easier to retrieve value from object
+
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        // from {title: 'Hats', items: Array(9)}, ...
+        const { title, items } = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        // to {hats: Array(9), jackets: Array(5), mens: Array(6), sneakers: Array(8), womens: Array(7)}
+        return acc;
+    }, {})
+
+    return categoryMap;
+}
+
+
+export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) => {
     if (!userAuth) return;
     // 3 arguments: database, name of collection, identifier = tells us what is doc
     const userDocRef = doc(db, 'users', userAuth.uid);
