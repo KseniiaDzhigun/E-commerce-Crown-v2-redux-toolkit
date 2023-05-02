@@ -1,13 +1,13 @@
 import SignUpForm from '../../components/Sign-up-form/Sign-up-form';
 import SignInForm from '../../components/Sign-in-form/Sign-in-form';
-import './Authentication.scss';
+import {AuthenticationContainer} from './Authentication.styles.jsx';
 
 const Authentication = () => {
     return (
-        <div className='authentication-container'>
+        <AuthenticationContainer>
             <SignInForm />
             <SignUpForm />
-        </div>
+        </AuthenticationContainer>
     )
 };
 
