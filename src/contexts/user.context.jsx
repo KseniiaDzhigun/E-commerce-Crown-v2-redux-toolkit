@@ -9,6 +9,10 @@ export const UserContext = createContext({
     setCurrentUser: () => null,
 });
 
+const INITIAL_STATE = {
+    currentUser: null,
+}
+
 export const USER_ACTION_TYPES = {
     SET_CURRENT_USER: 'SET_CURRENT_USER'
 }
@@ -24,10 +28,6 @@ const userReducer = (state, action) => {
         default:
             throw new Error(`unhandled type ${type} in userReducer`);
     }
-}
-
-const INITIAL_STATE = {
-    currentUser: null,
 }
 
 export const UserProvider = ({ children }) => {
@@ -51,7 +51,7 @@ export const UserProvider = ({ children }) => {
         })
 
         return unsubscribe;
-    }, [])
+    }, [dispatch])
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
