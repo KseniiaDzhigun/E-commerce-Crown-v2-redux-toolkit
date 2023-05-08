@@ -10,13 +10,13 @@ import Shop from './routes/Shop/Shop';
 import Checkout from './routes/Checkout/Checkout';
 import { setCurrentUser } from "./store/user/user.action";
 
+
 const App = () => {
   const dispatch = useDispatch();
 
   // Unsubscribe from this callback whenever you unmount
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
-      console.log(user);
       if (user) {
         // Give me the document reference inside db
         createUserDocumentFromAuth(user);

@@ -71,17 +71,7 @@ export const getCategoriesAndDocuments = async () => {
 
     const querySnapshot = await getDocs(q);
 
-    // querySnapshot.docs is an array, we will reduce it to object, as it's easier to retrieve value from object
-
-    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-        // from {title: 'Hats', items: Array(9)}, ...
-        const { title, items } = docSnapshot.data();
-        acc[title.toLowerCase()] = items;
-        // to {hats: Array(9), jackets: Array(5), mens: Array(6), sneakers: Array(8), womens: Array(7)}
-        return acc;
-    }, {})
-
-    return categoryMap;
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 }
 
 
@@ -90,9 +80,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
     // 3 arguments: database, name of collection, identifier = tells us what is doc
     const userDocRef = doc(db, 'users', userAuth.uid);
     // Doc reference pointing where the data will be placed
-    console.log(userDocRef);
     const userSnapshot = await getDoc(userDocRef);
-    console.log(userSnapshot.exists());
 
     // if user doedn't exist in db, create it
     if (!userSnapshot.exists()) {
