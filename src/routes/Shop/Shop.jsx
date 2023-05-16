@@ -5,7 +5,7 @@ import { getCategoriesAndDocuments } from '../../utils/firebase/firebase';
 
 import CategoriesPreview from '../Categories-preview/Categories-preview';
 import Category from '../Category/Category';
-import { setCategories } from '../../store/categories/category.action';
+import { setCategories } from '../../store/categories/category.reducer';
 
 const Shop = () => {
     const dispatch = useDispatch();

@@ -8,7 +8,7 @@ import Navigation from './routes/Navigation/Navigation';
 import Authentication from './routes/Authentication/Authentication';
 import Shop from './routes/Shop/Shop';
 import Checkout from './routes/Checkout/Checkout';
-import { setCurrentUser } from "./store/user/user.action";
+import { setCurrentUser } from "./store/user/user.reducer";
 
 
 const App = () => {
@@ -21,7 +21,9 @@ const App = () => {
         // Give me the document reference inside db
         createUserDocumentFromAuth(user);
       }
-      dispatch(setCurrentUser(user));
+      const pickedUser = user && (({ accessToken, email }) => ({ accessToken, email }))(user);
+      console.log(setCurrentUser(pickedUser));
+      dispatch(setCurrentUser(pickedUser));
     })
 
     return unsubscribe;
