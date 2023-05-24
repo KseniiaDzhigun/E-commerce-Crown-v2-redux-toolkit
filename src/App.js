@@ -21,7 +21,8 @@ const App = () => {
         // Give me the document reference inside db
         createUserDocumentFromAuth(user);
       }
-      const pickedUser = user && (({ accessToken, email }) => ({ accessToken, email }))(user);
+      console.log(user);
+      const pickedUser = user && (({ accessToken, email, displayName }) => ({ accessToken, email, displayName }))(user);
       console.log(setCurrentUser(pickedUser));
       dispatch(setCurrentUser(pickedUser));
     })
